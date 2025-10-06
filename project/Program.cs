@@ -38,7 +38,9 @@ namespace project
                     Console.WriteLine("please press ENTER to continue\n");
                     Console.ReadLine();
                 }
-                if (playerturn == 1)
+                if (playerturn == 1) 
+                    
+                    //dffjhvbjkkojnojmnojmno
                 {
 
                 }
