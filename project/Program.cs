@@ -13,6 +13,9 @@ namespace project
 
     internal class Program
     {
+
+        
+
         const int NormalAttackEne = 5;
         const int specialattackene = 10;
         const int healthene = 10;
@@ -39,7 +42,7 @@ namespace project
             specialattack,
             recharge,
             dodge,
-            healing
+            healing,
         }
 
 
@@ -49,6 +52,8 @@ namespace project
 
         static void Main(string[] args)
         {
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             int phealth = maxhealth;
             int ehealth = maxhealth;
             int pstam = maxenergy;
@@ -83,35 +88,68 @@ namespace project
                 int playerpriority = 1;
                 int enemypriority = 0;
 
-                if (pstam > 50)
-                { pstam = 50; }
-                if (estam > 50)
-                { estam = 50; }
-                if (phealth > 100)
-                { phealth = 10; }
-                if (ehealth > 50)
-                { ehealth = 50; }
+                if (pstam > maxenergy)
+                { pstam = maxenergy; }
+                if (estam > maxenergy)
+                { estam = maxenergy; }
+                if (phealth > maxhealth)
+                { phealth = maxhealth; }
+                if (ehealth > maxhealth)
+                { ehealth = maxhealth; }
 
 
                 while (action1 >= 1)
                 {
 
-                   
 
+                    Console.Write("Your health:   ");
+                    int healthbar = phealth / 10;
+                    for (int i = 0; i < healthbar; i++)
+                    {
+                        Console.Write('■');
+                    }
+                    Console.WriteLine(" " + phealth + "/" + maxhealth);
+                    Console.Write("Your stamina:  ");
+                    int staminabar = pstam / 10;
+                    for (int i = 0; i < staminabar; i++)
+                    {
+                        Console.Write('■');
+                    }
+                    Console.WriteLine(" " + pstam + "/" + maxenergy);
 
-                    Console.WriteLine("\nYour health: " + phealth);
-                    Console.WriteLine("Your stamnina: " + pstam);
-                    Console.WriteLine("Enemy health: " + ehealth);
-                    Console.WriteLine("Enemy stamina: " + estam);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Enemy health:  ");
+                    int enemyhealthbar = ehealth / 10;
+                    for (int i = 0; i < enemyhealthbar; i++)
+                    {
+                        Console.Write('■');
+                    }
+                    Console.WriteLine(" " + ehealth + "/" + maxhealth);
+                    Console.Write("Enemy stamina: ");
+                    int enemystaminabar = estam / 10;
+                    for (int i = 0; i < enemystaminabar; i++)
+                    {
+                        Console.Write('■');
+                    }
+                    Console.WriteLine(" " + estam + "/" + maxenergy);
 
-
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine("\n[1] Attack         [Damage: 1-10] [Accuracy: 80] [Cost: 5 energy]");
                     Console.WriteLine("\n[2] Special Attack [Damage: 5-20] [Accuracy: 50] [Cost: 10 energy]");
                     Console.WriteLine("\n[3] Recharge       [Recharge 4x energy] [+20% enemy accuracy] [Cost: 0 energy]");
                     Console.WriteLine("\n[4] Dodge          [Decrease enemy accuracy by 30%] [decrease energy recharge for this turn by 50%} [Cost: 0 energy]");
                     Console.WriteLine("\n[5] Heal           [Heal health 1-20]  [will heal equal to half your energy] [Base cost 10 energy plus half of what remains] [Healing does not cost an action AND will not go over 100hp]\n");
                     Console.WriteLine("type the corresponding move number below 1-5\n");
-                    Action Playermove = (Action)Convert.ToInt32(Console.ReadLine());
+                    int inputint = 0;
+                    string rawinput = Console.ReadLine();
+                    if (!int.TryParse(rawinput, out inputint))
+                    {
+                        
+
+                        Console.Clear();
+                        continue;
+                    }
+                    Action Playermove = (Action)inputint;
 
 
 
@@ -157,24 +195,29 @@ namespace project
                         Console.WriteLine("\nYou try to dodge your enemies attack");
                     }
 
-                    if (Playermove == Action.healing && action1 < 3)
+                    if (Playermove == Action.healing && action1 < otheraction)
                     {
                         Console.WriteLine("\nYou may only heal once per turn, please press enter to continue your turn.");
                         Console.ReadLine();
                     }
-                    if (Playermove == Action.healing && action1 == 3 && pstam >= healthene)
+                    if (Playermove == Action.healing && action1 == otheraction && pstam >= healthene)
                     {
                         action1 = action1 - healaction;
-                        phealth = phealth - 1;
+
+                        
                         pstam = pstam - healthene;                        
                         int healthgained = pstam / 2;
-                        pstam = pstam / 2;
                         phealth = phealth + healthgained;
-                        Console.WriteLine("\nYou meditate and gain");
-                        Console.WriteLine("+" + healthgained + " health");
-                    
+                        pstam = pstam / 2;
+                       
+                        Console.Write("\nYou meditate and gain");
+                        Console.WriteLine(" +" + healthgained + " health\n");
+                        if (phealth > maxhealth)
+                        { phealth = maxhealth; }
+                        
+                       
                     }
-                    
+                 
 
 
 
@@ -182,11 +225,13 @@ namespace project
 
                 }
 
+               
+
 
 
                 while (action2 >= 1)
                 {
-
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Action enemymove = (Action)rndene.Next(1, 6);
 
 
@@ -224,25 +269,26 @@ namespace project
                         Console.WriteLine("\nYour enemy attempts to dodge any attacks you may make");
                     }
 
-                    if (enemymove == Action.healing && action2 < 3)
+                    if (enemymove == Action.healing && action2 < otheraction)
                     {
 
                     }
-                    if (enemymove == Action.healing && action2 == 3 && estam >= healthene)
+                    if (enemymove == Action.healing && action2 == otheraction && estam >= healthene)
                     {
-                        action2 = action2 - healaction;
-                        ehealth = ehealth - 1;
+                        action2 = action2 - healaction;                        
                         estam = estam - healthene;                        
                         int healthgained = estam / 2;
+                        ehealth = ehealth + healthgained;
                         estam = estam / 2;
                         ehealth = ehealth + healthgained;
                         Console.WriteLine("\nEnemy healed for +" + healthgained + " health");
+                        if (ehealth > maxhealth)
+                        { ehealth = maxhealth; }
                     }
-                    Console.WriteLine("\nPress enter to continue");
-                    Console.ReadLine();
+                   
 
                 }
-               
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 if (playerattackbool == true)
                 {
                    
@@ -252,7 +298,7 @@ namespace project
                         ehealth = ehealth - playerattackdamage;
                     }
                     if (playeraccuracy > normalattackaccuracy)
-                    { Console.WriteLine("You miss your attack"); }
+                    { Console.WriteLine("\nYou miss your attack"); }
 
 
 
@@ -262,7 +308,7 @@ namespace project
                     
                     if (playeraccuracy <= specialattackaccuracy)
                     {
-                        Console.WriteLine("\nYour special attack lands and deals a staggering" + playerspecialattackdamage + " damage");
+                        Console.WriteLine("\nYour special attack lands and deals a staggering " + playerspecialattackdamage + " damage");
                         ehealth = ehealth - playerspecialattackdamage;
                     }
                     if (playeraccuracy > specialattackaccuracy)
@@ -270,38 +316,46 @@ namespace project
                 }
                 if (eattack == true)
                 {
-                   
+                    Console.ForegroundColor = ConsoleColor.Red;
                     if (enemyaccuracy <= normalattackaccuracy)
                     {
-                        Console.WriteLine("\n\n\n The lands a hit and you take" + enemyattackdamage + " damage");
+                       
+                            Console.WriteLine("\nThe lands a hit and you take " + enemyattackdamage + " damage");
                         phealth = phealth - enemyattackdamage;
                     }
                     if (enemyaccuracy > normalattackaccuracy)
-                    { Console.WriteLine("\n\n\n Luckily the enemy missed"); }
+                    { Console.WriteLine("\nLuckily the enemy missed"); }
                 }
                 if (especialattack == true)
                 {
                     
                     if (enemyaccuracy <= specialattackaccuracy)
                     {
-                        Console.WriteLine("\n\n\n Unfortunately the enemy lands a special attack for" + enemyattackdamage + " damage");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nUnfortunately the enemy lands a special attack for " + enemyattackdamage + " damage");
                         phealth = phealth - enemyattackdamage;
                     }
                     if (enemyaccuracy > specialattackaccuracy)
-                    { Console.WriteLine("\n\n\n Luckily the enemy missed"); }
+                    { Console.WriteLine("\nLuckily the enemy missed"); }
                 }
-                Console.WriteLine("\n\n\nPlease press enter to continue");
-                    Console.ReadLine();
+
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("\nPress enter to continue\n");
+                Console.ReadLine();
+
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.Clear();
             }
             if (ehealth <= 0)
             {
-                Console.WriteLine("\n you WIN");
+                Console.WriteLine("\nCongrats you won against the enemy");
 
                 Console.ReadLine();
             }
             if (phealth <= 0)
             {
-                Console.WriteLine("\n you ARE A LOSER");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nWait really you lost? I thought you were better than this.");
 
                 Console.ReadLine();
             }
