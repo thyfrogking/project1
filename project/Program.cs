@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace project
     internal class Program
     {
 
-        
+
 
         const int NormalAttackEnergy = 5;
         const int specialattackenergy = 10;
@@ -22,7 +23,7 @@ namespace project
         const int healaction = 1;
         const int otheraction = 3;
         const int attacklow = 100;
-        const int attackhigh = 111;
+        const int attackhigh = 110;
         const int specialattacklow = 5;
         const int specialattackhigh = 21;
         const int rechargeaccuracychange = -20;
@@ -41,7 +42,7 @@ namespace project
         const int healthenergychanger = 2;
 
 
-        
+
         enum Action
         {
             attack = 1,
@@ -58,14 +59,14 @@ namespace project
 
         static void Main(string[] args)
         {
-            
+
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            
+
 
             Random rndene = new Random();
 
             int winstreak = 0;
-            bool continueplaying = true;
+            bool continueplaying = false;
             bool continuemenu = true;
 
             while (continuemenu == true)
@@ -73,10 +74,31 @@ namespace project
 
                 Console.WriteLine("\nMAIN MENU");
                 Console.WriteLine("\n[1] Play");
-                Console.WriteLine("\n[2] Settings (under development)");
-                Console.WriteLine("\n[3] End game");
+                Console.WriteLine("\n[2] End game\n");
 
-              int menuinput = Convert.ToInt32(Console.ReadLine());
+
+                int menuinput = 0;
+                string newinput = Console.ReadLine();
+                if (!int.TryParse(newinput, out menuinput))
+                {
+
+
+                    Console.Clear();
+                    continue;
+                }
+
+                if (menuinput == 1)
+                {
+                    continueplaying = true;
+                    Console.Clear();
+                }
+                else if (menuinput == 2)
+                { continuemenu = false; }
+                else 
+                {
+                    Console.WriteLine("\nthat is not an option please try again\n");
+                }
+
 
                 while (continueplaying == true)
                 {
@@ -124,7 +146,7 @@ namespace project
                         {
 
                             // this is the general health and stamina bars 
-                            Console.Write("Your health:   ");
+                            Console.Write("\nYour health:   ");
                             int healthbar = playerhealth / healthbardivider;
                             for (int i = 0; i < healthbar; i++)
                             {
@@ -413,11 +435,13 @@ namespace project
                     // the end of the game and loop
                     if (enemyhealth <= 0)
                     {
+                        winstreak = winstreak + 1;
                         int loop = 1;
                         while (loop == 1)
                         {
+                            Console.Clear();
                             Console.WriteLine("\nCongrats you won against the enemy");
-                            winstreak = winstreak + 1;
+                            
                             Console.WriteLine("\nYou have a winstreak of " + winstreak + " would you like to continue\n [1] Yes \n [2] No");
                             int inputint = 0;
                             string rawinput = Console.ReadLine();
@@ -434,9 +458,10 @@ namespace project
                             {
                                 loop = loop - 1;
                                 continueplaying = false;
+                                winstreak = 0;
                             }
                             if (inputint < 1 || inputint > 2)
-                            { Console.WriteLine("please try again that number isnt an option"); }
+                            { Console.WriteLine("Please try again that number isnt an option"); }
 
                         }
                         Console.Clear();
@@ -470,15 +495,15 @@ namespace project
                                 continueplaying = false;
                             }
                             if (inputint < 1 || inputint > 2)
-                            { Console.WriteLine("please try again that number isnt an option"); }
+                            { Console.WriteLine("Please try again that number isnt an option"); }
                         }
                         Console.Clear();
                     }
                 }
-                
+
             }
-           
-            
+
+
 
 
 
