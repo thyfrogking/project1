@@ -22,8 +22,8 @@ namespace project
         const int healthenergy = 10;
         const int healaction = 1;
         const int otheraction = 3;
-        const int attacklow = 100;
-        const int attackhigh = 110;
+        const int attacklow = 1;
+        const int attackhigh = 11;
         const int specialattacklow = 5;
         const int specialattackhigh = 21;
         const int rechargeaccuracychange = -20;
